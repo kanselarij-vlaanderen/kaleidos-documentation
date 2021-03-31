@@ -15,7 +15,7 @@ Een publicatieaangelegenheid is gelinkt aan een dossier via `dossier:behandelt`.
 
 Bij het opstarten van een nieuwe publicatieaangelegenheid wordt de openingsdatum (`dossier:openingsdatum`) op de huidige datum/tijd ingesteld. De titel (`dct:title`) en korte titel (`dct:alternative`) worden overgenomen van de besluitsvormingsaangelegenheid indien die er is.
 
-Sommige eigenschappen van de publicatieaangelegenheid hebben betrekking op het doeldocument van de publication-flow (vb. type regelgevend document, wijze van publicatie). Momenteel zijn deze rechtstreeks op publicatieaangelegenheid gedefinieerd, maar mogelijk willen we hier in de toekomst toch een aparte resource voor definiëren.
+Sommige eigenschappen van de publicatieaangelegenheid hebben betrekking op het doeldocument van de publication-flow (vb. type regelgevend document, wijze van publicatie). Momenteel zijn deze rechtstreeks op publicatieaangelegenheid gedefinieerd, maar mogelijk willen we hier in de toekomst toch een aparte resource voor definiëren. ((TBC en hoort misschien eerder als eigenschap op dossierniveau))
 
 Opmerkingen:
 * Het splitsen van dossier en besluitvormingsaangelegenheid in de huidige implementatie valt buiten de scope van de publicatieflow
@@ -42,6 +42,11 @@ Wanneer de status gewijzigd wordt naar afgevoerd of gepubliceerd, betekent dit o
 Iedere publication flow omvat volgende, vaste procedurestappen:
 1. Vertaling
 2. Publicatie
+
+((TBC Met de aanpassing van designs krijgen we:
+1. vertaling
+2. drukproef
+3. publicatie ))
 
 Elk van de procedurestap types is een `skos:Concept` die deel uitmaakt van eenzelfde `skos:ConceptScheme` via `skos:inScheme`.
 
@@ -71,7 +76,7 @@ De aanvraag activiteit bevat zelf weinig eigenschappen. Het scherm om de aanvraa
 De geselecteerde documenten om te vertalen zijn het eindresultaat (`dossier:genereert`) van de aanvraag activiteit en tevens de bron (`prov:used`) van de vertaal activiteit.
 
 ### Vertaal activiteit
-Wanneer het vertaalde document ontvangen wordt, wordt het als resultaat (`dossier:genereert`) aan de vertaling-activiteit gekoppeld en toegevoegd als stuk aan het dossier. Er wordt een einddatum op de activiteit gezet en, aangezien er momenteel maar 1 vertaling nodig is, is dit ook een einddatum van de vertaling-procedurestap.
+Wanneer het vertaalde document ontvangen wordt, wordt het als resultaat (`dossier:genereert`) aan de vertaling-activiteit gekoppeld en toegevoegd als stuk aan het dossier. Er wordt een einddatum op de activiteit gezet en, aangezien er momenteel maar 1 vertaling nodig is, is dit ook een einddatum van de vertaling-procedurestap.  ((TBC er kan wel een correctie/aanvulling op de vertaling gevraagd worden binnen eenzelfde stap.))
 
 **TODO**: link tussen origineel document en vertaald stuk?, taal toevoegen aan stuk?
 
@@ -103,7 +108,7 @@ Iedere aanvraag-activiteit gebruikt (`prov:used`) stukken. Deze worden als bijla
 **TODO**: regelgevend document als referentiedocument. Verder uit te werken wanneer designs gefinaliseerd zijn
 
 ## Niet via MR
-In het geval een publication-flow opgestart wordt niet via een MR wordt er een nieuw dossier (`dossier:Dossier`) gemaakt op het moment dat de publicatieaangelegenheid gemaakt wordt. De gebruiken kan vrij een titel (`dct:title`) en korte titel (`dct:alternative`) ingeven.
+In het geval een publication-flow opgestart wordt "niet via een MR" wordt er een nieuw dossier (`dossier:Dossier`) gemaakt op het moment dat de publicatieaangelegenheid gemaakt wordt. De gebruiker kan vrij een titel (`dct:title`) en korte titel (`dct:alternative`) ingeven. ((TBC hier willen we ook link aan het beleidsdomein en het type regelgeveing))
 
 Mogelijk willen we in de toekomst voor publicaties die opgestart worden niet vanuit een MR toch een beperkte historiek van de besluitvormingsaangelegenheid bijhouden.
 
@@ -122,10 +127,10 @@ Het intern werkingsnummer is gestructureerd. De structuur wordt gecapteerd met `
 De eigenschap `skos:notation` van de `adms:Identifier` bevat de samengestelde identifier.
 
 ## Numac nummer
-Het numac nummer is een eigenschap die eigenlijk bij het besluit hoort dat gepubliceerd wordt in het BS als resultaat van de publication-flow. Aangezien deze besluit resource nog niet voorhanden is bij het aanvragen van de drukproef en het numac-nummer actief gebruikt wordt door OVRB tijdens het opvolgen van publicaties, wordt het numac-nummer ook bijgehouden als eigenschap van de publicatieaangelegenheid via `pub:identifier`.
+Het numac nummer is een eigenschap die eigenlijk bij de te publiceren tekst (Decreet, Besluit, anderzins...) hoort dat gepubliceerd wordt in het BS als resultaat van de publication-flow. Aangezien deze resource nog niet voorhanden is bij het aanvragen van de drukproef en het numac-nummer actief gebruikt wordt door OVRB tijdens het opvolgen van publicaties, wordt het numac-nummer ook bijgehouden als eigenschap van de publicatieaangelegenheid via `pub:identifier`.
 
 # Publicatie
-Het eindresultaat van een publication-flow is een gepubliceerd besluit in het BS. Dit is een legale verschijningsvorm (`eli:LegalExpression`) van de rechtsgrond (`eli:LegalResource`) die vervat zit in het besluit. De beslissingsfiche die opgeladen wordt bij een agendapunt van de MR is een andere legale verschijningsvorm van diezelfde rechtsgrond.
+Het eindresultaat van een publication-flow is een gepubliceerde tekst in het BS zoals bepaald in het besluit. Dit is een legale verschijningsvorm (`eli:LegalExpression`) van de rechtsgrond (`eli:LegalResource`) die vervat zit in het besluit. De beslissingsfiche die opgeladen wordt bij een agendapunt van de MR is een andere legale verschijningsvorm van diezelfde rechtsgrond.
 
 De structuur van de URL waarop de publicatie beschikbaar is in het BS volgt de [ELI richtlijnen](http://www.ejustice.just.fgov.be/eli/besluit/2020/06/11/2019031018/staatsblad). Vb. http://www.ejustice.just.fgov.be/eli/wet/2016/04/22/2016003166. Op basis van de data in Kaleidos kan deze URL geconstrueerd worden en automatisch gemoniteerd worden om te verifiëren of de aangevraagde publicatie effectief verschenen is. Indien de publicatie verschenen is, kan automatisch:
 - de publicatiestatus aangepast worden naar gepubliceerd
@@ -133,6 +138,8 @@ De structuur van de URL waarop de publicatie beschikbaar is in het BS volgt de [
 - een einddatum gezet worden op de publicatie-procedurestap
 - een einddatum gezet worden op de publicatie-activiteit
 - de ELI-conforme URL koppelen aan het besluit in Kaleidos (**TODO** met welk predicate?)
+
+((TBC Numac nummer, ELI, stroomt mee naar de publieke data op Themis; wordt het daarom niet beter aan Dossier gekoppeld? ))
 
 # Mail notificaties
 Voor de aanvraag- en annuleringactiviteiten wordt een notificatie via e-mail verstuurd vanuit de Kaleidos applicatie. Dit wordt gemodelleerd met `nmo:Email` volgens het data model van de [mail delivery service](https://github.com/redpencilio/deliver-email-service).
