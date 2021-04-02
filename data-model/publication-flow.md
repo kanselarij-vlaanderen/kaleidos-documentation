@@ -61,9 +61,9 @@ De vertaling-procedurestap kan volgende activiteiten omvatten:
 
 Elk van de activiteiten is een subclass van `prov:Activity`. Naar analogie met de activiteiten binnen de besluitvormingsaangelegenheid, worden de subclasses expliciet gedefinieerd in de implementatie. Eventueel in de toekomst, wanneer mu-cl-resources inheritance ondersteunt, kan er gewerkt worden met een superclass die alle gemeenschappelijke eigenschappen bevat.
 
-De activiteiten komen steeds in paren voor. Voor iedere taal waarvoor een vertaling moet gebeuren, wordt een aanvraag-activiteit en automatisch een bijhorende vertaling-activiteit gemaakt. De activiteiten zijn gekoppeld aan elkaar via `prov:wasInformedBy`.
+De activiteiten komen steeds in paren voor. Voor iedere taal waarvoor een vertaling moet gebeuren, wordt een aanvraag-activiteit en automatisch een bijhorende vertaling-activiteit gemaakt. De activiteiten zijn gekoppeld aan elkaar via `prov:wasInformedBy`. In praktijk wordt momenteel steeds slechts naar 1 taal vertaald, nl. Frans. We voorzien echter de flexibiliteit in het data model dat dit meerdere talen (en dus meerdere aanvraag- en vertaal-activiteiten) kunnen zijn in de toekomst.
 
-In praktijk wordt momenteel steeds slechts naar 1 taal vertaald, nl. Frans. We voorzien echter de flexibiliteit in het data model dat dit meerdere talen (en dus meerdere aanvraag- en vertaal-activiteiten) kunnen zijn in de toekomst.
+Voor een vertaling kan ook een correctie/aanvulling gevraagd worden. Dit resulteert in een nieuwe aanvraag- en vertaalactiviteit binnen de vertaling-procedurestap.
 
 ### Aanvraag activiteit
 De aanvraag activiteit bevat zelf weinig eigenschappen. Het scherm om de aanvraag op te stellen bevat voornamelijk invulvelden voor gerelateerde resources, nl. `nmo:Email` en `pub:VertaalActiviteit`.
@@ -71,7 +71,7 @@ De aanvraag activiteit bevat zelf weinig eigenschappen. Het scherm om de aanvraa
 De geselecteerde documenten om te vertalen zijn het eindresultaat (`dossier:genereert`) van de aanvraag activiteit en tevens de bron (`prov:used`) van de vertaal activiteit.
 
 ### Vertaal activiteit
-Wanneer het vertaalde document ontvangen wordt, wordt het als resultaat (`dossier:genereert`) aan de vertaling-activiteit gekoppeld en toegevoegd als stuk aan het dossier. Er wordt een einddatum op de activiteit gezet en, aangezien er momenteel maar 1 vertaling nodig is, is dit ook een einddatum van de vertaling-procedurestap.
+Wanneer het vertaalde document ontvangen wordt, wordt het als resultaat (`dossier:genereert`) aan de vertaling-activiteit gekoppeld en toegevoegd als stuk aan het dossier. Er wordt een einddatum op de activiteit gezet.
 
 **TODO**: link tussen origineel document en vertaald stuk?, taal toevoegen aan stuk?
 
@@ -94,8 +94,6 @@ Sequentieel bevat de publicatie-procedurestap volgende activiteiten paren:
 Iedere aanvraag-activiteit gebruikt (`prov:used`) stukken. Deze worden als bijlage toegevoegd aan de notificatie e-mail die verstuurd wordt. Elke gerelateerde activiteit (zowel vertaal-, drukproef- als publicatie-activiteit) gebruikt dezelfde stukken als de aanvraag-activiteit. De ontvangen stukken worden gelinkt aan de activiteit via `dossier:genereert`. In het geval van de publicatie-activiteit is het ontvangen stuk tevens een `besluit:Besluit`.
 
 Totdat inheritance ondersteund wordt in mu-cl-resources worden voor de relatie tussen de procedurestappen en verschillende types activiteit custom subpredicates van `dossier:vindtPlaatsTijdens` gebruikt. Om het onderscheid te maken zit het type activiteit vervat in het predicate, bijvoorbeeld `pub:aanvraagVindtPlaatsTijdens`, `pub:vertalingVindtPlaatsTijdens`, ... En analoge redenering is van toepassing voor de praktische implementatie van de relatie `prov:wasInformedBy` tussen activiteiten onderling.
-
-- **TODO**: praktische implementatie van progress badges (totaal = aantal aanvraagactiviteiten; in progress = aantal aanvraagactiviteiten waarvan bijhorende activiteit geen einddatum heeft)
 
 # Opstarten van een publication-flow
 ## Vanuit een MR
