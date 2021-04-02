@@ -126,12 +126,12 @@ Het numac nummer is een eigenschap die eigenlijk bij het besluit hoort dat gepub
 # Publicatie
 Het eindresultaat van een publication-flow is een gepubliceerd besluit in het BS. Dit is een legale verschijningsvorm (`eli:LegalExpression`) van de rechtsgrond (`eli:LegalResource`) die vervat zit in het besluit. De beslissingsfiche die opgeladen wordt bij een agendapunt van de MR is een andere legale verschijningsvorm van diezelfde rechtsgrond.
 
-De structuur van de URL waarop de publicatie beschikbaar is in het BS volgt de [ELI richtlijnen](http://www.ejustice.just.fgov.be/eli/besluit/2020/06/11/2019031018/staatsblad). Vb. http://www.ejustice.just.fgov.be/eli/wet/2016/04/22/2016003166. Op basis van de data in Kaleidos kan deze URL geconstrueerd worden en automatisch gemoniteerd worden om te verifiëren of de aangevraagde publicatie effectief verschenen is. Indien de publicatie verschenen is, kan automatisch:
+De structuur van de URL waarop de publicatie beschikbaar is in het BS volgt de [ELI richtlijnen](http://www.ejustice.just.fgov.be/eli/besluit/2020/06/11/2019031018/staatsblad). Vb. http://www.ejustice.just.fgov.be/eli/wet/2016/04/22/2016003166. Op basis van de data in Kaleidos kan deze URL geconstrueerd worden en automatisch gemonitord worden om te verifiëren of de aangevraagde publicatie effectief verschenen is. Indien de publicatie verschenen is, kan automatisch:
 - de publicatiestatus aangepast worden naar gepubliceerd
 - een sluitingsdatum gezet worden op de publicatieaangelegenheid
 - een einddatum gezet worden op de publicatie-procedurestap
 - een einddatum gezet worden op de publicatie-activiteit
-- de ELI-conforme URL koppelen aan het besluit in Kaleidos (**TODO** met welk predicate?)
+- de ELI-conforme rechtsgrond URL koppelen aan het besluit-stuk in Kaleidos via `eli:realizes`.
 
 # Mail notificaties
 Voor de aanvraag- en annuleringactiviteiten wordt een notificatie via e-mail verstuurd vanuit de Kaleidos applicatie. Dit wordt gemodelleerd met `nmo:Email` volgens het data model van de [mail delivery service](https://github.com/redpencilio/deliver-email-service).
