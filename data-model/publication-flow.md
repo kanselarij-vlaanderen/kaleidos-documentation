@@ -43,7 +43,7 @@ Iedere publication flow omvat volgende, vaste procedurestappen:
 1. Vertaling
 2. Publicatie
 
-Elk van de procedurestap types is een `skos:Concept` die deel uitmaakt van eenzelfde `skos:ConceptScheme` via `skos:inScheme`.
+Elk van de procedurestap types is een `skos:Concept` die deel uitmaakt van eenzelfde `skos:ConceptScheme` via `skos:inScheme`. Voor ieder type wordt ook een expliciete subclass aangemaakt zodanig dat in de overzichtstabel van publicaties kan gesorteerd worden op een property van een van beide procedurestappen (vb. uiterste datum publicatie). Het type (`dct:type`) is dus fixed voor iedere subclass.
 
 Bij het aanmaken van een publication flow worden de 2 procedurestappen automatisch aangemaakt met als startdatum (`dossier:Procedurestap.startdatum`) dezelfde datum als de openingsdatum van de publicatieaangelegenheid.
 
@@ -93,9 +93,8 @@ Sequentieel bevat de publicatie-procedurestap volgende activiteiten paren:
 ## Activiteiten
 Iedere aanvraag-activiteit gebruikt (`prov:used`) stukken. Deze worden als bijlage toegevoegd aan de notificatie e-mail die verstuurd wordt. Elke gerelateerde activiteit (zowel vertaal-, drukproef- als publicatie-activiteit) gebruikt dezelfde stukken als de aanvraag-activiteit. De ontvangen stukken worden gelinkt aan de activiteit via `dossier:genereert`. In het geval van de publicatie-activiteit is het ontvangen stuk tevens een `besluit:Besluit`.
 
-- **TODO**: praktische implementatie van `prov:wasInformedBy` in mu-cl-resources
-- **TODO**: praktische implementatie van `dossier:vindtPlaatsTijdens` in mu-cl-resources
-- **TODO**: `pub:Procedurestap` < `dossier:Procedurestap` om scheiding met besluitvorming strikter te maken
+Totdat inheritance ondersteund wordt in mu-cl-resources worden voor de relatie tussen de procedurestappen en verschillende types activiteit custom subpredicates van `dossier:vindtPlaatsTijdens` gebruikt. Om het onderscheid te maken zit het type activiteit vervat in het predicate, bijvoorbeeld `pub:aanvraagVindtPlaatsTijdens`, `pub:vertalingVindtPlaatsTijdens`, ... En analoge redenering is van toepassing voor de praktische implementatie van de relatie `prov:wasInformedBy` tussen activiteiten onderling.
+
 - **TODO**: praktische implementatie van progress badges (totaal = aantal aanvraagactiviteiten; in progress = aantal aanvraagactiviteiten waarvan bijhorende activiteit geen einddatum heeft)
 
 # Opstarten van een publication-flow
