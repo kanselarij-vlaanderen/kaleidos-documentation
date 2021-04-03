@@ -8,7 +8,7 @@ De publication-flow valt buiten de scope van het OSLO Besluitvorming AP. Er zijn
 
 ![Data model](../images/publication-flow-data-model.svg)
 
-## Publicatieaangelegenheid
+# Publicatieaangelegenheid
 Naar analogie met de `besluitvorming:Besluitvormingsaangelegenheid` (die leidt tot een besluit) wordt in de publication-flow een `pub:Publicatieaangelegeidheid` (die leidt tot een publicatie) als main resource gezien. De publicatieaangelegenheid is de kapstok waar alles aanhangt.
 
 Een publicatieaangelegenheid is gelinkt aan een dossier via `dossier:behandelt`. In het geval het een publicatie via de MR betreft, is dit hetzelfde dossier als de besluitvormingsaangelegenheid. In het andere geval wordt er een nieuw dossier gemaakt op het moment dat de publicatieaangelegenheid gemaakt wordt.
