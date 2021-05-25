@@ -1,4 +1,4 @@
-# Publication flow [in progress]
+# Publication flow
 
 De publication flow omvat het proces om besluiten te publiceren in het Belgisch Staatsblad. Zo’n besluit kan het resultaat zijn van een besluitvormingsaangelegenheid van de VR of aangeleverd worden via een andere weg.
 
@@ -9,11 +9,11 @@ De publication-flow valt buiten de scope van het OSLO Besluitvorming AP. Er zijn
 ![Data model](../images/publication-flow-data-model.svg)
 
 # Publicatieaangelegenheid
-Naar analogie met de `besluitvorming:Besluitvormingsaangelegenheid` (die leidt tot een besluit) wordt in de publication-flow een `pub:Publicatieaangelegeidheid` (die leidt tot een publicatie) als main resource gezien. De publicatieaangelegenheid is de kapstok waar alles aanhangt.
+Naar analogie met de `besluitvorming:Besluitvormingsaangelegenheid` (die leidt tot een besluit) wordt in de publication-flow een `pub:Publicatieaangelegenheid` (die leidt tot een publicatie) als main resource gezien. De publicatieaangelegenheid is de kapstok waar alles aanhangt.
 
-Een publicatieaangelegenheid is gelinkt aan een dossier via `dossier:behandelt`. In het geval het een publicatie via de MR betreft, is dit hetzelfde dossier als de besluitvormingsaangelegenheid. In het andere geval wordt er een nieuw dossier gemaakt op het moment dat de publicatieaangelegenheid gemaakt wordt.
+Een publicatieaangelegenheid is gelinkt aan een dossier via `dossier:behandelt`. In het geval het een publicatie via de MR betreft, is dit hetzelfde dossier als de besluitvormingsaangelegenheid. In het andere geval wordt er een nieuw dossier gemaakt op het moment dat de publicatieaangelegenheid gemaakt wordt. De relatie is 1-to-many: een publicatieaangelegenheid hoort bij één dossier, maar een dossier kan leiden tot meerdere publicatieaangelegenheden.
 
-Bij het opstarten van een nieuwe publicatieaangelegenheid wordt de openingsdatum (`dossier:openingsdatum`) op de huidige datum/tijd ingesteld. De titel (`dct:title`) en korte titel (`dct:alternative`) worden overgenomen van de besluitsvormingsaangelegenheid indien die er is.
+Bij het opstarten van een nieuwe publicatieaangelegenheid wordt de openingsdatum (`dossier:openingsdatum`) op de huidige datum/tijd ingesteld. De titel (`dct:title`) en korte titel (`dct:alternative`) worden overgenomen van de besluitsvormingsaangelegenheid indien die er is. Eens opgestart kan de titel van de publicatieaangelegenheid gewijzigd worden zonder dat de titel van de bijhorende besluitvormingsaangelegenheid wijzigt.
 
 Sommige eigenschappen van de publicatieaangelegenheid hebben betrekking op het doeldocument van de publication-flow (vb. type regelgevend document, wijze van publicatie). Momenteel zijn deze rechtstreeks op publicatieaangelegenheid gedefinieerd, maar mogelijk willen we hier in de toekomst toch een aparte resource voor definiëren.
 
@@ -21,7 +21,7 @@ Opmerkingen:
 * Het splitsen van dossier en besluitvormingsaangelegenheid in de huidige implementatie valt buiten de scope van de publicatieflow
 * Mogelijk willen we in de toekomst voor publicaties die opgestart worden niet vanuit een MR toch een beperkte historiek van de besluitvormingsaangelegenheid bijhouden
 
-**TODO**: relatie met referentiedocument(en)? Verder uit te werken wanneer design klaar is
+Voor een publicatieaangelegenheid die opgestart wordt vanuit een MR wordt een selectie van documenten (`dossier:Stuk`) vanop het agendapunt aangeduid als 'referentie'-document (via `pub:referentieDocument`). Dit document is het eigenlijke besluit waartoe het dossier geleid heeft, dat gepubliceerd wordt. Op lange termijn kan mogelijks automatisch afgeleid worden welk van de documenten uit het dossier het referentiedocument is.
 
 # Publicatie status
 Een publicatieaangelegenheid kent verschillende statussen:
@@ -66,12 +66,16 @@ De activiteiten komen steeds in paren voor. Voor iedere taal waarvoor een vertal
 Voor een vertaling kan ook een correctie/aanvulling gevraagd worden. Dit resulteert in een nieuwe aanvraag- en vertaalactiviteit binnen de vertaling-procedurestap.
 
 ### Aanvraag activiteit
+De brondocumenten voor een vertaling zijn, in het geval van een publicatie vanuit een MR, licht aangepast versies van de referentiedocumenten. De mensen van OVRB laden het brondocument voor de vertaling op alvorens ze een aanvraag starten. Dit document wordt via `pub:vertalingBronDocument` gelinkt aan de vertaling-procedurestap.
+
 De aanvraag activiteit bevat zelf weinig eigenschappen. Het scherm om de aanvraag op te stellen bevat voornamelijk invulvelden voor gerelateerde resources, nl. `nmo:Email` en `pub:VertaalActiviteit`.
+
+De aanvraag-activiteit is een instant activiteit. De start- en einddatum worden daarom op hetzelfde tijdstip ingesteld.
 
 De geselecteerde documenten om te vertalen zijn het eindresultaat (`dossier:genereert`) van de aanvraag activiteit en tevens de bron (`prov:used`) van de vertaal activiteit.
 
 ### Vertaal activiteit
-Wanneer het vertaalde document ontvangen wordt, wordt het als resultaat (`dossier:genereert`) aan de vertaling-activiteit gekoppeld en toegevoegd als stuk aan het dossier. Er wordt een einddatum op de activiteit gezet.
+Wanneer het vertaalde document ontvangen wordt, wordt het als resultaat (`dossier:genereert`) aan de vertaling-activiteit gekoppeld en toegevoegd als stuk aan het dossier. Er wordt een einddatum op de vertaalactiviteit gezet.
 
 **TODO**: link tussen origineel document en vertaald stuk?, taal toevoegen aan stuk?
 
@@ -87,8 +91,21 @@ De activiteiten komen steeds in paren voor. Voor iedere (correctie van) een druk
 
 Sequentieel bevat de publicatie-procedurestap volgende activiteiten paren:
 - aanvraag/drukproef voor initiele drukproef
-- aanvraag/drukproef voor correcties van drukproef (optioneel, kunnen er meerdere zijn)
+- aanvraag/drukproef voor correcties van drukproef (optioneel, kunnen er ook meerdere zijn)
 - aanvraag/publicatie voor finale publicatie
+
+### Aanvraag activiteit
+De brondocumenten voor een drukproef-aanvraag kunnen een verschillende oorsprong hebben:
+- de vertaalde documenten die het resultaat zijn van een vertaal-activiteit en aangeduid als 'voor drukproef'. Deze documenten worden via `pub:publicatieBronDocument` gelinkt aan de publicatie-procedurestap.
+- een verbeterd document dat opgeladen wordt door de mensen van OVRB. Deze documenten worden via `pub:publicatieCorrectieDocument` gelinkt aan de publicatie-procedurestap.
+
+De brondocumenten voor een (finale) publicatie-aanvraag zijn de ontvangen drukproef-documenten die het resultaat zijn van een drukproef-activiteit. Deze documenten worden via `dossier:genereert` gelinkt aan de drukproef-activiteit.
+
+### Drukproef activiteit
+Wanneer het drukproef document ontvangen wordt, wordt het als resultaat (`dossier:genereert`) aan de drukproef-activiteit gekoppeld en toegevoegd als stuk aan het dossier. Er wordt een einddatum op de drukproef-activiteit gezet.
+
+### Publicatie activiteit
+Wanneer de finale publicatie ontvangen wordt, wordt het als resultaat (`dossier:genereert`) aan de publicatie-activiteit gekoppeld en toegevoegd als stuk aan het dossier. Er wordt een einddatum op de publicatie-activiteit en op de publicatie-procedurestap gezet. Deze datum is tevens de publicatiedatum van het besluit.
 
 ## Activiteiten
 Iedere aanvraag-activiteit gebruikt (`prov:used`) stukken. Deze worden als bijlage toegevoegd aan de notificatie e-mail die verstuurd wordt. Elke gerelateerde activiteit (zowel vertaal-, drukproef- als publicatie-activiteit) gebruikt dezelfde stukken als de aanvraag-activiteit. De ontvangen stukken worden gelinkt aan de activiteit via `dossier:genereert`. In het geval van de publicatie-activiteit is het ontvangen stuk tevens een `besluit:Besluit`.
@@ -97,10 +114,13 @@ Totdat inheritance ondersteund wordt in mu-cl-resources worden voor de relatie t
 
 # Opstarten van een publication-flow
 ## Vanuit een MR
-**TODO**: regelgevend document als referentiedocument. Verder uit te werken wanneer designs gefinaliseerd zijn
+In het geval een publication-flow opgestart wordt vanuit een MR worden volgende relaties bijgehouden:
+- link naar het document (`dossier:Stuk`) via `pub:referentieDocument`
+- link naar het dossier van de besluitvormingsaangelegenheid via `dossier:behandelt`
+- link naar de beslissing (`besluitvorming:BeslissingsActiviteit`) via `dct:subject`. Aangezien `besluitvorming:BeslissingsActiviteit` en `besluit:BehandelingVanAgendapunt` momenteel nog 1 entiteit zijn in de huidige implementatie wordt de relatie gelegd naar `besluit:BehandelingVanAgendapunt`.
 
 ## Niet via MR
-In het geval een publication-flow opgestart wordt niet via een MR wordt er een nieuw dossier (`dossier:Dossier`) gemaakt op het moment dat de publicatieaangelegenheid gemaakt wordt. De gebruiken kan vrij een titel (`dct:title`) en korte titel (`dct:alternative`) ingeven.
+In het geval een publication-flow opgestart wordt niet via een MR wordt er een nieuw dossier (`dossier:Dossier`) en bijhorende beslissingsactiviteit gemaakt op het moment dat de publicatieaangelegenheid gemaakt wordt. De gebruiker kan vrij een titel (`dct:title`) en korte titel (`dct:alternative`) ingeven. Deze worden zowel op het dossier als op de publicatieaangelegenheid ingesteld. Tevens kan een datum van de beslissing ingevuld worden die ingesteld wordt als startdatum (`dossier:Activiteit.startdatum`) van de beslissingsactiviteit.
 
 Mogelijk willen we in de toekomst voor publicaties die opgestart worden niet vanuit een MR toch een beperkte historiek van de besluitvormingsaangelegenheid bijhouden.
 
@@ -116,7 +136,7 @@ Het intern werkingsnummer is gestructureerd. De structuur wordt gecapteerd met `
 - uniek nummer: `generiek:lokaleIdentificator`
 - versie (bis, tris, ...): `generiek:versieIdentificator`
 
-De eigenschap `skos:notation` van de `adms:Identifier` bevat de samengestelde identifier.
+De eigenschap `skos:notation` van de `adms:Identifier` bevat de samengestelde identifier. Deze wordt door de frontend in sync gehouden met de waarden van de gestructureerde identificator.
 
 ## Numac nummer
 Het numac nummer is een eigenschap die eigenlijk bij het besluit hoort dat gepubliceerd wordt in het BS als resultaat van de publication-flow. Aangezien deze besluit resource nog niet voorhanden is bij het aanvragen van de drukproef en het numac-nummer actief gebruikt wordt door OVRB tijdens het opvolgen van publicaties, wordt het numac-nummer ook bijgehouden als eigenschap van de publicatieaangelegenheid via `pub:identifier`.
