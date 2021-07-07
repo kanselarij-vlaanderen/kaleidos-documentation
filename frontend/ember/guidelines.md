@@ -17,10 +17,7 @@
   
   *Reason*: make components contained entities (don't require external knowledge)
 
-- Minimize server requests with include.
-- Use `store.query('model', { include: ... })` to prevent the template loading the related models one by one
-
-- Model loading algorighm:
+- Model loading procedure:
   
   - `model()`: main model
 
@@ -34,10 +31,10 @@
     return this.store.findRecord('example', params.example_id);
   }
   async afterModel(model) {
-    const { modes, statusses } = await RSVP.hash({
-      modes: this.store.findAll('publication-mode'),
-      statusses = this.store.query('status', ...),
-    });
+    const [ modes, statusses ] = await Promise.all([
+      this.store.findAll('publication-mode'),
+      this.store.query('status', ...),
+    ]);
     this.modes = modes;
     this.statusses = statusses;
   }
