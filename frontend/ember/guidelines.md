@@ -1,7 +1,12 @@
 # Naming conventions
 - actions: for DDAU
-  - inside component: `onSave`
-  - inside controller like `save`
+  - inside component: `save`
+  - component arguments (callback): `onSave`
+  - inside controller: `save`
+
+# Formatting
+## Handlebars
+- use "double quotes"
 
 # Coding guidelines
 ## Handlebars
@@ -9,13 +14,7 @@
 - Prefer `{{#unless condition}}` over `{{#if (not condition)}}` for simple conditions.
 
 ## JavaScript
-- Prefer simple data types as arguments to components
-  
-  *e.g.*
-  - instead of `EmberData.RecordArray`: `Array`
-  - instead of `Promise<Model>`: `Model`
-  
-  *Reason*: make components contained entities (don't require external knowledge)
+## Ember.js 🐹
 
 - Model loading procedure:
   
@@ -44,16 +43,30 @@
     controller.statusses = this.statusses;
   }
   ```
+- Prefer simple data types as arguments to components
+  
+  *e.g.*
+  - instead of `EmberData.RecordArray`: `Array`
+  - instead of `Promise<Model>`: `Model`
+  
+  *Reason*: make components contained entities (don't require external knowledge)
+
 
 - Make components responsible for loading of static data list (e.g. option list of `document-type`'s)
   
-  - Load the list into the store in a parent route
+  In order to prevent multiple calls, the following strategy can be used:
+  - load the list into the store in a parent route.
 
   - Use `peekAll` to prevent multiple calls
 
-- Prefer modern syntax
+- Prefer modern syntax and Ember Octane
   ```
-  // NOT: model.get('relatedModel.otherRelatedModel')
   const relatedModel = await model.relatedModel
   const otherRelatedModel = await relatedModel.otherRelatedModel
+  // NOT: model.get('relatedModel.otherRelatedModel')
+  ```
+- Prefer booleans over string constant options as arguments
+  ```
+  @isReadMode={{true}}
+  // NOT @mode="read"
   ```
