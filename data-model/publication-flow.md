@@ -4,7 +4,7 @@ De publication flow omvat het proces om besluiten te publiceren in het Belgisch 
 
 De publication flow gaat uit van ondertekende documenten als startpunt. De hele handteken-procedure wordt daarom onafhankelijk gezien van de publication flow.
 
-De publication-flow valt buiten de scope van het OSLO Besluitvorming AP. Er zijn echter wel gelijkenissen en raakpunten. Waar mogelijk worden concepten uit het Besluitvorming AP gebruikt. Deze worden aangevuld met nieuw gedefinieerde concepten in de `pub`-namespace (`http://mu.semte.ch/vocabularies/ext/publication/`).
+De publication-flow valt buiten de scope van het OSLO Besluitvorming AP. Er zijn echter wel gelijkenissen en raakpunten. Waar mogelijk worden concepten uit het Besluitvorming AP en gerelateerde APs gebruikt. Deze worden aangevuld met nieuw gedefinieerde concepten in de `pub`-namespace (`http://mu.semte.ch/vocabularies/ext/publicatie/`).
 
 ![Data model](../images/publication-flow-data-model.svg)
 
@@ -19,6 +19,7 @@ Sommige eigenschappen van de publicatieaangelegenheid hebben betrekking op het d
 
 Opmerkingen:
 * Het splitsen van dossier en besluitvormingsaangelegenheid in de huidige implementatie valt buiten de scope van de publicatieflow
+* Het splitsen van beslissingsactiviteit en behandeling van agendapunt in de huidige implementatie valt buiten de scope van de publicatieflow.
 * Mogelijk willen we in de toekomst voor publicaties die opgestart worden niet vanuit een MR toch een beperkte historiek van de besluitvormingsaangelegenheid bijhouden
 
 Voor een publicatieaangelegenheid die opgestart wordt vanuit een MR wordt een selectie van documenten (`dossier:Stuk`) vanop het agendapunt aangeduid als 'referentie'-document (via `pub:referentieDocument`). Dit document is het eigenlijke besluit waartoe het dossier geleid heeft, dat gepubliceerd wordt. Op lange termijn kan mogelijks automatisch afgeleid worden welk van de documenten uit het dossier het referentiedocument is.
@@ -110,7 +111,7 @@ Wanneer de finale publicatie ontvangen wordt, wordt het als resultaat (`dossier:
 ## Activiteiten
 Iedere aanvraag-activiteit gebruikt (`prov:used`) stukken. Deze worden als bijlage toegevoegd aan de notificatie e-mail die verstuurd wordt. Elke gerelateerde activiteit (zowel vertaal-, drukproef- als publicatie-activiteit) gebruikt dezelfde stukken als de aanvraag-activiteit. De ontvangen stukken worden gelinkt aan de activiteit via `dossier:genereert`. In het geval van de publicatie-activiteit is het ontvangen stuk tevens een `besluit:Besluit`.
 
-Totdat inheritance ondersteund wordt in mu-cl-resources worden voor de relatie tussen de procedurestappen en verschillende types activiteit custom subpredicates van `dossier:vindtPlaatsTijdens` gebruikt. Om het onderscheid te maken zit het type activiteit vervat in het predicate, bijvoorbeeld `pub:aanvraagVindtPlaatsTijdens`, `pub:vertalingVindtPlaatsTijdens`, ... En analoge redenering is van toepassing voor de praktische implementatie van de relatie `prov:wasInformedBy` tussen activiteiten onderling.
+Totdat inheritance ondersteund wordt in mu-cl-resources worden voor de relatie tussen de procedurestappen en verschillende types activiteit custom subpredicates van `dossier:vindtPlaatsTijdens` gebruikt. Om het onderscheid te maken zit het type activiteit vervat in het predicate, bijvoorbeeld `pub:aanvraagVindtPlaatsTijdens`, `pub:vertalingVindtPlaatsTijdens`, ... Een analoge redenering is van toepassing voor de praktische implementatie van de relatie `prov:wasInformedBy` tussen activiteiten onderling.
 
 # Opstarten van een publication-flow
 ## Vanuit een MR
