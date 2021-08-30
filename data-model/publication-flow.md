@@ -2,7 +2,7 @@
 
 De publication flow omvat het proces om besluiten te publiceren in het Belgisch Staatsblad. Zo’n besluit kan het resultaat zijn van een besluitvormingsaangelegenheid van de VR of aangeleverd worden via een andere weg.
 
-De publication flow gaat uit van ondertekende documenten als startpunt. De hele handteken-procedure wordt daarom onafhankelijk gezien van de publication flow.
+De publication flow gaat uit van [ondertekende documenten](./signing-flow.md) als startpunt. De hele handteken-procedure wordt daarom onafhankelijk gezien van de publication flow.
 
 De publication-flow valt buiten de scope van het OSLO Besluitvorming AP. Er zijn echter wel gelijkenissen en raakpunten. Waar mogelijk worden concepten uit het Besluitvorming AP en gerelateerde APs gebruikt. Deze worden aangevuld met nieuw gedefinieerde concepten in de `pub`-namespace (`http://mu.semte.ch/vocabularies/ext/publicatie/`).
 
