@@ -1,6 +1,6 @@
-# Signing flow
+# Sign flow
 
-De signing flow omvat het proces om documenten uit de ministerraad van de VR digitaal te laten ondertekenen door de bevoegde ministers. Het startpunt zijn de documenten die gekoppeld zijn aan een behandeld agendapunt van de ministerraad. Het beoogde resultaat zijn ondertekende documenten. Deze vormen het startpunt voor de [publication flow](./publication-flow.md).
+De sign flow omvat het proces om documenten uit de ministerraad van de VR digitaal te laten ondertekenen door de bevoegde ministers. Het startpunt zijn de documenten die gekoppeld zijn aan een behandeld agendapunt van de ministerraad. Het beoogde resultaat zijn ondertekende documenten. Deze vormen het startpunt voor de [publication flow](./publication-flow.md).
 
 De signing-flow valt buiten de scope van het OSLO Besluitvorming AP. Er zijn echter wel gelijkenissen en raakpunten. Waar mogelijk worden concepten uit het Besluitvorming AP en gerelateerde APs gebruikt. Deze worden aangevuld met nieuw gedefinieerde concepten in de `sign`-namespace (`http://mu.semte.ch/vocabularies/ext/handtekenen/`).
 
@@ -13,7 +13,7 @@ Een apart type `sign:Handtekenaangelegenheid` (< `dbpedia:Case`) definiëren laa
 
 Aan de kant van de secretarie kan de `sign:Handtekenaangelegenheid` in het gehele plaatje van de besluitvorming louter als een procedurestap binnen de besluitvormingsaangelegenheid aanzien worden. Zij hoeven de details van de workflow niet te kennen aangezien de opvolging voornamelijk aan de kant van de kabinetten gebeurt. Omdat er momenteel echter geen nood is voor de secretarie (integendeel) om deze stap weer te geven naast de andere procedurestappen in de Kaleidos applicatie, wordt het type `dossier:Procedurestap` niet expliciet toegekend aan de `sign:Handtekenaangelegenheid`.
 
-Een handtekenaangelegenheid is gelinkt aan een dossier via `sign:behandeltDossier` (< `dossier:behandelt`). Het dossier is hetzelfde als dat van de besluitvormingsaangelegenheid. Signing flows voor andere dossiers worden niet ondersteund in Kaleidos.
+Een handtekenaangelegenheid is gelinkt aan een dossier via `sign:behandeltDossier` (< `dossier:behandelt`). Het dossier is hetzelfde als dat van de besluitvormingsaangelegenheid. Sign flows voor andere dossiers worden niet ondersteund in Kaleidos.
 
 Een handtekenaangelegenheid start steeds vanuit een beslissingsactiviteit, die op zijn beurt het resultaat is van een behandeling van agendapunt. In de huidige implementatie zijn beiden resources nog vervat in 1, nl. `besluit:BehandelingVanAgendapunt`. De link `sign:heeftBeslissing` wordt daarom momenteel vanuit handtekenaangelegenheid gelegd naar `besluit:BehandelingVanAgendapunt`, maar dit zal op termijn aangepast worden naar `besluitvorming:Beslissingsactiviteit`
 
@@ -29,16 +29,16 @@ Opmerkingen:
 Iedere handtekenaangelegenheid bevat 1 vast procedurestap: `sign:HandtekenProcedurestap` (< `dossier:Procedurestap`). Bij het aanmaken van een handtekenaangelegenheid wordt de procedurestap automatisch aangemaakt met als startdatum (`dossier:Procedurestap.startdatum`) dezelfde datum als de openingsdatum van de handtekenaangelegenheid.
 
 Tijdens een procedurestap kunnen volgende activiteiten plaatsvinden:
-- `sign:DocumentMarkeringsactiviteit`
+- `sign:Markeringsactiviteit`
 - `sign:Voorbereidingsactiviteit`
-- `sign:HandtekenActiviteit`
-- `sign:HandtekeningWeigeringActiviteit`
+- `sign:Handtekenactiviteit`
+- `sign:HandtekeningWeigeractiviteit`
 - `sign:AnnulatieActiviteit`
 - `sign:Afrondingsactiviteit`
 
 Elke activiteit is een subclass van `prov:Activity`, heeft een startdatum (`dossier:Activiteit.startdatum`) en mogelijk een einddatum (`dossier:Activiteit.einddatum`). Voor instant activiteiten zijn de start- en einddatum gelijk. Andere activiteiten kunnen meer tijd in beslag nemen.
 
-Totdat inheritance ondersteund wordt in mu-cl-resources worden voor de relatie tussen de procedurestappen en verschillende types activiteit custom subpredicates van `dossier:vindtPlaatsTijdens` gebruikt. Om het onderscheid te maken zit het type activiteit vervat in het predicate, bijvoorbeeld `sign:documentMarkeringVindtPlaatsTijdens`, `sign:handtekeningVindtPlaatsTijdens`, ...
+Totdat inheritance ondersteund wordt in mu-cl-resources worden voor de relatie tussen de procedurestappen en verschillende types activiteit custom subpredicates van `dossier:vindtPlaatsTijdens` gebruikt. Om het onderscheid te maken zit het type activiteit vervat in het predicate, bijvoorbeeld `sign:markeringVindtPlaatsTijdens`, `sign:handtekeningVindtPlaatsTijdens`, ...
 
 Elk van de activiteiten wordt verder verduidelijkt in onderstaande secties.
 
@@ -70,10 +70,10 @@ Na de voorbereiding van de documenten in SigningHub volgt het eigenlijke tekenen
 
 Initieel hebben de handtekenactiviteiten in Kaleidos geen start- en einddatum. Eens de werkstroom in SigningHub opgestart wordt, wordt de startdatum van alle handtekenactiviteiten ingevuld. De einddatum wordt pas gezet op het moment dat de minister zijn handtekening plaatst.
 
-Een minister kan ook weigeren om te tekenen in SigningHub. Dit wordt in Kaleidos gecapteerd als `sign:HandtekeningWeigeringActiviteit`. Deze is via `sign:isGeweigerdDoor` (< `prov:wasInformedBy`) gelinkt aan de handtekenactiviteit.
+Een minister kan ook weigeren om te tekenen in SigningHub. Dit wordt in Kaleidos gecapteerd als `sign:HandtekeningWeigeractiviteit`. Deze is via `sign:isGeweigerdDoor` (< `prov:wasInformedBy`) gelinkt aan de handtekenactiviteit.
 
 ## Consolideren van handtekeningen
-Eens alle ministers hun handtekening geplaatst hebben, moet de signing-flow afgerond worden. Het getekende document wordt dan vanuit SigningHub overgedragen naar Kaleidos en de werkstroom wordt verwijderd in SigningHub. Deze activiteit wordt gecapteerd door `sign:Afrondingsactiveit` die een link (`sign:getekendDocument` < `dossier:genereert`) naar het getekende document (`sign:GehandtekendStuk` < `dossier:Stuk`).
+Eens alle ministers hun handtekening geplaatst hebben, moet de signing-flow afgerond worden. Het getekende document wordt dan vanuit SigningHub overgedragen naar Kaleidos en de werkstroom wordt verwijderd in SigningHub. Deze activiteit wordt gecapteerd door `sign:Afrondingsactiveit` die een link (`sign:getekendDocument` < `dossier:genereert`) naar het getekende document (`sign:GetekendStuk` < `dossier:Stuk`).
 
 De afrondingsactiviteit is gelinkt aan de verschillende handtekenactiviteiten via `prov:wasInformedBy`. De output van de handtekenactiviteiten, nl. een getekend document, is de input voor de afrondingsactiviteit.
 
