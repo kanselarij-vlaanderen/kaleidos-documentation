@@ -32,7 +32,7 @@ Tijdens een procedurestap kunnen volgende activiteiten plaatsvinden:
 - `sign:Markeringsactiviteit`
 - `sign:Voorbereidingsactiviteit`
 - `sign:Handtekenactiviteit`
-- `sign:HandtekeningWeigeractiviteit`
+- `sign:Weigeractiviteit`
 - `sign:AnnulatieActiviteit`
 - `sign:Afrondingsactiviteit`
 
@@ -45,7 +45,7 @@ Elk van de activiteiten wordt verder verduidelijkt in onderstaande secties.
 ## Markeren van documenten
 Een nieuwe handtekenaangelegenheid wordt opgestart door de raadgever door het markeren van documenten die getekend moeten worden op de agenda van een MR. Voor ieder document wordt een aparte handtekenaangelegenheid opgestart. De aangelegenheid wordt gelinkt aan het dossier en de behandeling van agendapunt waarop het document gemarkeerd wordt. De ingelogde gebruiker, nl. de raadgever, wordt als `dct:creator` gelinkt aan de handtekenaangelegenheid.
 
-Voor iedere nieuwe handtekenaangelegenheid wordt een handteken-procedurestap gemaakt en een bijhorende document-markeringsactiviteit (`sign:DocumentMarkeringsActiviteit`). De activiteit bevat een link (`sign:gemarkeerdDocument` < `dossier:genereert`) naar het document (`dossier:Stuk`) dat gemarkeerd wordt om te handtekenen.
+Voor iedere nieuwe handtekenaangelegenheid wordt een handteken-procedurestap gemaakt en een bijhorende markeringsactiviteit (`sign:MarkeringsActiviteit`). De activiteit bevat een link (`sign:gemarkeerdStuk` < `dossier:genereert`) naar het document (`dossier:Stuk`) dat gemarkeerd wordt om te handtekenen.
 
 _Note: het markeren van documenten bevat nog geen interactie met SigningHub. De signing-flow is op dit moment enkel gekend aan de kant van Kaleidos._
 
@@ -55,9 +55,9 @@ Nadat de raadgever documenten gemarkeerd heeft, moet iedere handtekenaangelegenh
 - het koppelen van documenten aan een werkstroom in SigningHub
 - het plaatsen van handtekenvakken in de document(en) in SigningHub
 
-Al deze acties zitten vervat in `sign:Voorbereidingsactiviteit`. Deze activiteit is gelinkt aan de document-markeringsactiviteit via `prov:wasInformedBy`: de output van de markeringsactiviteit, nl. het gemarkeerde document, is de input van de voorbereidingsactiviteit.
+Al deze acties zitten vervat in `sign:Voorbereidingsactiviteit`. Deze activiteit is gelinkt aan de markeringsactiviteit via `prov:wasInformedBy`: de output van de markeringsactiviteit, nl. het gemarkeerde document, is de input van de voorbereidingsactiviteit.
 
-Het document dat opgeladen wordt in SigningHub wordt in Kaleidos gecapteerd als `sh:Document`. Het is gelinkt aan de voorbereidingsactiviteit via `sign:voorbereidingGenereert` (< `dossier:genereert`) en aan het orginele stuk in Kaleidos via `prov:hadPrimarySource`. Ieder SigningHub document heeft een document- en package ID. De package ID identificeert de werkstroom in SigningHub.
+Het document dat opgeladen wordt in SigningHub wordt in Kaleidos gecapteerd als `sh:Document`. Het is gelinkt aan de voorbereidingsactiviteit via `sign:voorbereidingGenereert` (< `dossier:genereert`) en aan het orginele stuk in Kaleidos via `prov:hadPrimarySource`. Ieder SigningHub document heeft een  en package ID. De package ID identificeert de werkstroom in SigningHub.
 
 De mandatarissen waarvoor handtekenvakken geplaatst moeten worden, zijn de ministers die bevoegd zijn voor het agendapunt en bijkomend de minister-president. Deze laatste moet alle documenten van de ministerraad die getekend moeten worden, ondertekenen.
 
@@ -73,15 +73,15 @@ Initieel hebben de handtekenactiviteiten in Kaleidos geen start- en einddatum. E
 Een minister kan ook weigeren om te tekenen in SigningHub. Dit wordt in Kaleidos gecapteerd als `sign:HandtekeningWeigeractiviteit`. Deze is via `sign:isGeweigerdDoor` (< `prov:wasInformedBy`) gelinkt aan de handtekenactiviteit.
 
 ## Consolideren van handtekeningen
-Eens alle ministers hun handtekening geplaatst hebben, moet de signing-flow afgerond worden. Het getekende document wordt dan vanuit SigningHub overgedragen naar Kaleidos en de werkstroom wordt verwijderd in SigningHub. Deze activiteit wordt gecapteerd door `sign:Afrondingsactiveit` die een link (`sign:getekendDocument` < `dossier:genereert`) naar het getekende document (`sign:GetekendStuk` < `dossier:Stuk`).
+Eens alle ministers hun handtekening geplaatst hebben, moet de signing-flow afgerond worden. Het getekende document wordt dan vanuit SigningHub overgedragen naar Kaleidos en de werkstroom wordt verwijderd in SigningHub. Deze activiteit wordt gecapteerd door `sign:Afrondingsactiveit` die een link (`sign:getekendStuk` < `dossier:genereert`) naar het getekende document (`sign:GetekendStuk` < `dossier:Stuk`).
 
 De afrondingsactiviteit is gelinkt aan de verschillende handtekenactiviteiten via `prov:wasInformedBy`. De output van de handtekenactiviteiten, nl. een getekend document, is de input voor de afrondingsactiviteit.
 
 Merk op dat enkel het finale, volledige getekende document vanuit SigningHub overgenomen wordt in Kaleidos. Voor alle tussenliggende stappen, waarbij het document slechts deels getekend is, wordt het document niet overgenomen in Kaleidos.
 
-Het gehandtekende document is een expliciete subclass van `dossier:Stuk` om in de applicatie duidelijk het onderscheid te kunnen maken tussen getekende en ongetekende documenten. De getekende documenten mogen immers niet voor iedereen zichtbaar zijn. Elk getekend document is natuurlijk gekoppeld aan zijn ongetekende versie via `sign:ongetekendDocument` (< `prov:wasDerivedFrom`).
+Het gehandtekende document is een expliciete subclass van `dossier:Stuk` om in de applicatie duidelijk het onderscheid te kunnen maken tussen getekende en ongetekende documenten. De getekende documenten mogen immers niet voor iedereen zichtbaar zijn. Elk getekend document is natuurlijk gekoppeld aan zijn ongetekende versie via `sign:ongetekendStuk` (< `prov:wasDerivedFrom`).
 
 ## Annuleren van de workflow
-Wanneer enkel de document-markeringsactiviteit uitgevoerd is en men dan beslist dit ongedaan te maken, worden alle reeds aangemaakte resources (handtekenaangelegenheid, handteken-procedurestap en document-markeringsactivieit) verwijderd. Er is dan geen spoor meer van deze flow in de data.
+Wanneer enkel de markeringsactiviteit uitgevoerd is en men dan beslist dit ongedaan te maken, worden alle reeds aangemaakte resources (handtekenaangelegenheid, handteken-procedurestap en markeringsactivieit) verwijderd. Er is dan geen spoor meer van deze flow in de data.
 
 Eens een werkstroom opgestart is in SigningHub daarentegen kan deze niet meer volledig verwijderd worden, maar enkel nog geannuleerd. Dit wordt gemodelleerd als `sign:AnnulatieActiviteit`, gelinkt aan de handteken-procedurestap. Vanaf dan kunnen er geen handtekeningen meer geplaatst worden en kan de werkstroom niet afgerond worden.
