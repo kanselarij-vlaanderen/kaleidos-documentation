@@ -53,7 +53,7 @@ In uitbreiding van de procedurestap uit het OSLO Besluitvorming AP kan er bij ie
 
 Deze datums geven een streefdatum voor de hele procedurestap. Op een activiteit van de procedurestap kan een specifiekere datum voor die ene activiteit gezet worden.
 
-## Vertaling procedurestap
+## Vertaling-procedurestap
 De vertaling-procedurestap kan volgende activiteiten omvatten:
 - aanvraag (`pub:AanvraagActiviteit`): het versturen van een aanvraag (via mail) om een document te vertalen
 - vertaling (`pub:VertaalActiviteit`): het vertalen van een document
@@ -61,54 +61,50 @@ De vertaling-procedurestap kan volgende activiteiten omvatten:
 
 Elk van de activiteiten is een subclass van `prov:Activity`. Naar analogie met de activiteiten binnen de besluitvormingsaangelegenheid, worden de subclasses expliciet gedefinieerd in de implementatie. Eventueel in de toekomst, wanneer mu-cl-resources inheritance ondersteunt, kan er gewerkt worden met een superclass die alle gemeenschappelijke eigenschappen bevat.
 
-De activiteiten komen steeds in paren voor. Voor iedere taal waarvoor een vertaling moet gebeuren, wordt een aanvraag-activiteit en automatisch een bijhorende vertaling-activiteit gemaakt. De activiteiten zijn gekoppeld aan elkaar via `prov:wasInformedBy`. In praktijk wordt momenteel steeds slechts naar 1 taal vertaald, nl. Frans. We voorzien echter de flexibiliteit in het data model dat dit meerdere talen (en dus meerdere aanvraag- en vertaal-activiteiten) kunnen zijn in de toekomst.
+De activiteiten komen steeds in paren voor. Voor iedere taal waarvoor een vertaling moet gebeuren, wordt een aanvraag-activiteit en automatisch een bijhorende vertaling-activiteit gemaakt. De activiteiten zijn gekoppeld aan elkaar via `prov:wasInformedBy`. In praktijk wordt momenteel steeds slechts naar 1 taal vertaald, nl. Frans. We voorzien echter de flexibiliteit in het data model dat dit meerdere talen (en dus meerdere aanvraag- en vertaalactiviteiten) kunnen zijn in de toekomst.
 
 Voor een vertaling kan ook een correctie/aanvulling gevraagd worden. Dit resulteert in een nieuwe aanvraag- en vertaalactiviteit binnen de vertaling-procedurestap.
 
-### Aanvraag activiteit
-De brondocumenten voor een vertaling zijn, in het geval van een publicatie vanuit een MR, licht aangepast versies van de referentiedocumenten. De mensen van OVRB laden het brondocument voor de vertaling op alvorens ze een aanvraag starten. Dit document wordt via `pub:vertalingBronDocument` gelinkt aan de vertaling-procedurestap.
-
-De aanvraag activiteit bevat zelf weinig eigenschappen. Het scherm om de aanvraag op te stellen bevat voornamelijk invulvelden voor gerelateerde resources, nl. `nmo:Email` en `pub:VertaalActiviteit`.
+### Aanvraag-activiteit
+Aan een aanvraag-activiteit van een vertaling worden de te vertalen documenten gekoppeld. Bij het opstellen van een vertaalaanvraag dienen de mensen van OVRB de te vertalen documenten te uploaden. Deze documenten zijn, in het geval van een publicatie vanuit een MR, licht aangepast versies van de referentiedocumenten. Verder is er de mogelijkheid tot aanpassing van de notificatie-e-mail (`nmo:Email`) en invoer van de limiet van de vertaling (=uiterste veraaldatum) (`tmo:dueDate`) voor de vertaalactivitieit (`pub:VertaalActiviteit`).
 
 De aanvraag-activiteit is een instant activiteit. De start- en einddatum worden daarom op hetzelfde tijdstip ingesteld.
 
-De geselecteerde documenten om te vertalen zijn het eindresultaat (`dossier:genereert`) van de aanvraag activiteit en tevens de bron (`prov:used`) van de vertaal activiteit.
+De geselecteerde documenten om te vertalen zijn het eindresultaat (`dossier:genereert`) van de aanvraag-activiteit en tevens de bron (`prov:used`) van de vertaalactiviteit.
 
-### Vertaal activiteit
+### Vertaalactiviteit
 Wanneer het vertaalde document ontvangen wordt, wordt het als resultaat (`dossier:genereert`) aan de vertaling-activiteit gekoppeld en toegevoegd als stuk aan het dossier. Er wordt een einddatum op de vertaalactiviteit gezet.
 
 **TODO**: link tussen origineel document en vertaald stuk?, taal toevoegen aan stuk?
 
-## Publicatie procedurestap
+## Publicatie-procedurestap
 De publicatie-procedurestap kan volgende activiteiten omvatten:
 - aanvraag (`pub:AanvraagActiviteit`): het versturen van een aanvraag (via mail) naar het BS om een drukproef of publicatie voor een document te maken
-- drukproef (`pub:DrukproefActiviteit`): het maken van (een correctie van) de drukproef voor een document
+- drukproef (`pub:DrukproefActiviteit`): het maken van een drukproef voor een document
 - publicatie (`pub:PublicatieActiviteit`): publicatie van een goedgekeurde drukproef in het BS
 
 Elk van de activiteiten is een subclass van `prov:Activity`. Naar analogie met de activiteiten binnen de besluitvormingsaangelegenheid, worden de subclasses expliciet gedefinieerd in de implementatie. Eventueel in de toekomst, wanneer mu-cl-resources inheritance ondersteunt, kan er gewerkt worden met een superclass die alle gemeenschappelijke eigenschappen bevat.
 
-De activiteiten komen steeds in paren voor. Voor iedere (correctie van) een drukproef, wordt een aanvraag-activiteit en automatisch een bijhorende drukproef-activiteit gemaakt. Ook bij publicatie, wordt een aanvraag-activiteit en automatisch een bijhorende publicatie-activiteit gemaakt. De activiteiten zijn gekoppeld aan elkaar via `prov:wasInformedBy`.
+De activiteiten komen steeds in paren voor. Voor iedere drukproef, wordt een aanvraag-activiteit en automatisch een bijhorende drukproef-activiteit gemaakt. Ook bij publicatie, wordt een aanvraag-activiteit en automatisch een bijhorende publicatie-activiteit gemaakt. De activiteiten zijn gekoppeld aan elkaar via `prov:wasInformedBy`.
 
 Sequentieel bevat de publicatie-procedurestap volgende activiteiten paren:
-- aanvraag/drukproef voor initiele drukproef
-- aanvraag/drukproef voor correcties van drukproef (optioneel, kunnen er ook meerdere zijn)
-- aanvraag/publicatie voor finale publicatie
+- aanvraag/drukproef (kunnen er ook meerdere zijn)
+- aanvraag/publicatie
 
-### Aanvraag activiteit
-De brondocumenten voor een drukproef-aanvraag kunnen een verschillende oorsprong hebben:
-- de vertaalde documenten die het resultaat zijn van een vertaal-activiteit en aangeduid als 'voor drukproef'. Deze documenten worden via `pub:publicatieBronDocument` gelinkt aan de publicatie-procedurestap.
-- een verbeterd document dat opgeladen wordt door de mensen van OVRB. Deze documenten worden via `pub:publicatieCorrectieDocument` gelinkt aan de publicatie-procedurestap.
+### Aanvraag-activiteit
+Aan een aanvraag-activiteit van een drukproef worden de te proefdrukken documenten gekoppeld. Bij het opstellen van een drukproef-aanvraag worden de documenten uit de vertaalstap automatisch toegevoegd. Dit zijn zowel de te vertalen als de vertaalde documenten. Indien gewenst kan de medewerker van OVRB deze terug uit de aanvraag halen. Daarnaast kan die tijdens deze stap documenten uploaden. Deze documenten worden zowel aan de aanvraag-activieit (`prov:used`) als aan de drukproef-activiteit toegevoegd (`prov:used`). Verder is er de mogelijkheid tot aanpassing van de notificatie-e-mail (`nmo:Email`). 
 
-De brondocumenten voor een (finale) publicatie-aanvraag zijn de ontvangen drukproef-documenten die het resultaat zijn van een drukproef-activiteit. Deze documenten worden via `dossier:genereert` gelinkt aan de drukproef-activiteit.
+Aan een aanvraag-activiteit van een publicatie worden de te publiceren documenten gekoppeld. Bij het opstellen van een publicatie-aanvraag worden de ontvangen documenten uit de drukproefstap toegevoegd. Indien gewenst kan de medewerker van OVRB deze terug uit de aanvraag halen. Daarnaast kan die tijdens deze stap documenten uploaden. Deze documenten worden zowel aan de aanvraag-activieit (`prov:used`) als aan de drukproef-activiteit toegevoegd (`prov:used`). Verder is er de mogelijkheid tot aanpassing van de notificatie-e-mail (`nmo:Email`).
 
-### Drukproef activiteit
+### Drukproef-activiteit
 Wanneer het drukproef document ontvangen wordt, wordt het als resultaat (`dossier:genereert`) aan de drukproef-activiteit gekoppeld en toegevoegd als stuk aan het dossier. Er wordt een einddatum op de drukproef-activiteit gezet.
 
-### Publicatie activiteit
-Wanneer de finale publicatie ontvangen wordt, wordt het als resultaat (`dossier:genereert`) aan de publicatie-activiteit gekoppeld en toegevoegd als stuk aan het dossier. Er wordt een einddatum op de publicatie-activiteit en op de publicatie-procedurestap gezet. Deze datum is tevens de publicatiedatum van het besluit.
+### Publicatie-activiteit
+Het gepubliceerde besluit (`eli:LegalResource`) kan op twee manieren worden geregistreerd. De gebruiker kan deze manueel invoeren of deze kan automatisch zijn uitgelezen uit het Staatsblad.
+Dit besluit wordt als resultaat (`dossier:genereert`) aan de publicatie-activiteit gekoppeld. Er wordt een einddatum op de publicatie-activiteit en op de publicatie-procedurestap gezet. Deze datum is tevens de publicatiedatum van het besluit.
 
 ## Activiteiten
-Iedere aanvraag-activiteit gebruikt (`prov:used`) stukken. Deze worden als bijlage toegevoegd aan de notificatie e-mail die verstuurd wordt. Elke gerelateerde activiteit (zowel vertaal-, drukproef- als publicatie-activiteit) gebruikt dezelfde stukken als de aanvraag-activiteit. De ontvangen stukken worden gelinkt aan de activiteit via `dossier:genereert`. In het geval van de publicatie-activiteit is het ontvangen stuk tevens een `besluit:Besluit`.
+Iedere aanvraag-activiteit gebruikt (`prov:used`) stukken. Deze worden als bijlage toegevoegd aan de notificatie-e-mail die verstuurd wordt. Elke gerelateerde activiteit (zowel vertaal-, drukproef- als publicatie-activiteit) gebruikt (`prov:used`) dezelfde stukken als de aanvraag-activiteit. De ontvangen stukken worden gelinkt aan de activiteit via `dossier:genereert`. In het geval van de publicatie-activiteit wordt de publicatie geregistreerd als een besluit (`eli:LegalResource`).
 
 Totdat inheritance ondersteund wordt in mu-cl-resources worden voor de relatie tussen de procedurestappen en verschillende types activiteit custom subpredicates van `dossier:vindtPlaatsTijdens` gebruikt. Om het onderscheid te maken zit het type activiteit vervat in het predicate, bijvoorbeeld `pub:aanvraagVindtPlaatsTijdens`, `pub:vertalingVindtPlaatsTijdens`, ... En analoge redenering is van toepassing voor de praktische implementatie van de relatie `prov:wasInformedBy` tussen activiteiten onderling.
 
