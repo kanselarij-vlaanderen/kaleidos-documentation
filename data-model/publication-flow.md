@@ -62,7 +62,8 @@ De vertaling-procedurestap kan volgende activiteiten omvatten:
 
 Elk van de activiteiten is een subclass van `prov:Activity`. Naar analogie met de activiteiten binnen de besluitvormingsaangelegenheid, worden de subclasses expliciet gedefinieerd in de implementatie. Eventueel in de toekomst, wanneer mu-cl-resources inheritance ondersteunt, kan er gewerkt worden met een superclass die alle gemeenschappelijke eigenschappen bevat.
 
-De activiteiten komen steeds in paren voor. Voor iedere taal waarvoor een vertaling moet gebeuren, wordt een aanvraag-activiteit en automatisch een bijhorende vertaling-activiteit gemaakt. De activiteiten zijn gekoppeld aan elkaar via `prov:wasInformedBy`. In praktijk wordt momenteel steeds slechts naar 1 taal vertaald, nl. Frans. We voorzien echter de flexibiliteit in het data model dat dit meerdere talen (en dus meerdere aanvraag- en vertaalactiviteiten) kunnen zijn in de toekomst.
+De activiteiten komen meestal in paren voor. Voor iedere taal waarvoor een vertaling moet gebeuren, wordt een aanvraag-activiteit en automatisch een bijhorende vertaling-activiteit gemaakt. De activiteiten zijn gekoppeld aan elkaar via `prov:wasInformedBy`. In praktijk wordt momenteel steeds slechts naar 1 taal vertaald, nl. Frans. We voorzien echter de flexibiliteit in het data model dat dit meerdere talen (en dus meerdere aanvraag- en vertaalactiviteiten) kunnen zijn in de toekomst.
+Een vertaling-activiteit kan ook worden aangemaakt zonder een aanvraag-activiteit omdat er in de praktijk vertalingen ontvangen worden of beschikbaar zijn zonder een aanvraag vanuit onze applicatie.
 
 Voor een vertaling kan ook een correctie/aanvulling gevraagd worden. Dit resulteert in een nieuwe aanvraag- en vertaalactiviteit binnen de vertaling-procedurestap.
 
@@ -86,11 +87,17 @@ De publicatie-procedurestap kan volgende activiteiten omvatten:
 
 Elk van de activiteiten is een subclass van `prov:Activity`. Naar analogie met de activiteiten binnen de besluitvormingsaangelegenheid, worden de subclasses expliciet gedefinieerd in de implementatie. Eventueel in de toekomst, wanneer mu-cl-resources inheritance ondersteunt, kan er gewerkt worden met een superclass die alle gemeenschappelijke eigenschappen bevat.
 
-De activiteiten komen steeds in paren voor. Voor iedere drukproef, wordt een aanvraag-activiteit en automatisch een bijhorende drukproef-activiteit gemaakt. Ook bij publicatie, wordt een aanvraag-activiteit en automatisch een bijhorende publicatie-activiteit gemaakt. De activiteiten zijn gekoppeld aan elkaar via `prov:wasInformedBy`.
+De activiteiten komen meestal in paren voor. Voor iedere drukproef, wordt een aanvraag-activiteit en automatisch een bijhorende drukproef-activiteit gemaakt. Ook bij publicatie, wordt een aanvraag-activiteit en automatisch een bijhorende publicatie-activiteit gemaakt. De activiteiten zijn gekoppeld aan elkaar via `prov:wasInformedBy`.
 
-Sequentieel bevat de publicatie-procedurestap volgende activiteiten paren:
+Een drukproef-activiteit of publicatie-activiteit kan ook worden aangemaakt zonder een aanvraag-activiteit.
+
+Sequentieel bevat de publicatie-procedurestap volgende activiteiten:
 - aanvraag/drukproef (kunnen er ook meerdere zijn)
 - aanvraag/publicatie
+of
+- drukproef (kunnen er ook meerdere zijn)
+- publicatie
+of een combinatie van een paar en een losstaande drukproef -of publicatie-activiteit
 
 ### Aanvraag-activiteit
 Aan een aanvraag-activiteit van een drukproef worden de te proefdrukken documenten gekoppeld. Bij het opstellen van een drukproef-aanvraag worden de documenten uit de vertaalstap automatisch toegevoegd. Dit zijn zowel de te vertalen als de vertaalde documenten. Indien gewenst kan de medewerker van OVRB deze terug uit de aanvraag halen. Daarnaast kan die tijdens deze stap documenten uploaden. Deze documenten worden zowel aan de aanvraag-activieit (`prov:used`) als aan de drukproef-activiteit toegevoegd (`prov:used`). Verder is er de mogelijkheid tot aanpassing van de notificatie-e-mail (`nmo:Email`). 
