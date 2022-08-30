@@ -6,7 +6,7 @@ The [Flemish URI Standard for Data](https://assets.vlaanderen.be/image/upload/v1
 
 For resources in Kaleidos, this means the `domain` and `type` parts of a resource URI will be `themis.vlaanderen.be` and `id`, in accordance with the Flemish URI Standard.
 
-The `concept` part needs to be a semantically understandable name to idenitfy the **category** of the resource, e.g., 'mandatee', 'persoon' or 'concept/toegangsniveau'. Note that the `concept` part can be nested, depending on the scenario.
+The `concept` part needs to be a semantically understandable name to identify the **category** of the resource, e.g., 'mandatee', 'persoon' or 'concept/toegangsniveau'. Note that the `concept` part can be nested, depending on the scenario. The `concept` name must always be lowercase, singular, and in Dutch. Pay special attention to compositions, and make sure to use the correct Dutch spelling, without spaces.
 
 Finally, for the `reference` part, the standard does not specify any obligatory structure, and instead leaves this up to the organisation. For Kaleidos, we'll maintain the rule: use a **uuid** for each resource, e.g., `http://themis.vlaanderen.be/id/mandatee/145bafde-10ea-4a73-8fe9-042cdea3ccbe`.
 
