@@ -15,29 +15,31 @@ Een publicatieaangelegenheid is gelinkt aan een dossier via `dossier:behandelt`.
 
 Bij het opstarten van een nieuwe publicatieaangelegenheid wordt de openingsdatum (`dossier:openingsdatum`) op de huidige datum/tijd ingesteld. De titel (`dct:title`) en korte titel (`dct:alternative`) worden overgenomen van de besluitsvormingsaangelegenheid indien die er is. Eens opgestart kan de titel van de publicatieaangelegenheid gewijzigd worden zonder dat de titel van de bijhorende besluitvormingsaangelegenheid wijzigt.
 
-Sommige eigenschappen van de publicatieaangelegenheid hebben betrekking op het doeldocument van de publication-flow (vb. type regelgevend document, wijze van publicatie). Momenteel zijn deze rechtstreeks op publicatieaangelegenheid gedefinieerd, maar mogelijk willen we hier in de toekomst toch een aparte resource voor definiëren.
-
-Opmerkingen:
-* Het splitsen van dossier en besluitvormingsaangelegenheid in de huidige implementatie valt buiten de scope van de publicatieflow
-* Het splitsen van beslissingsactiviteit en behandeling van agendapunt in de huidige implementatie valt buiten de scope van de publicatieflow.
-* Mogelijk willen we in de toekomst voor publicaties die opgestart worden niet vanuit een MR toch een beperkte historiek van de besluitvormingsaangelegenheid bijhouden
+Sommige eigenschappen van de publicatieaangelegenheid hebben betrekking op het doeldocument van de publication-flow (vb. type regelgevend document, wijze van publicatie). Momenteel zijn deze rechtstreeks op publicatieaangelegenheid gedefinieerd, maar mogelijk willen we hier in de toekomst toch een aparte resource voor definiëren zodat de informatie gedeeld kan worden tussen de besluitvorming-, handteken- en publicatieaangelegenheid.
 
 Voor een publicatieaangelegenheid die opgestart wordt vanuit een MR wordt een selectie van documenten (`dossier:Stuk`) vanop het agendapunt aangeduid als 'referentie'-document (via `pub:referentieDocument`). Dit document is het eigenlijke besluit waartoe het dossier geleid heeft, dat gepubliceerd wordt. Op lange termijn kan mogelijks automatisch afgeleid worden welk van de documenten uit het dossier het referentiedocument is.
 
 # Publicatie status
 Een publicatieaangelegenheid kent verschillende statussen:
-* te publiceren
-* gepauzeerd
-* afgevoerd
-* gepubliceerd
+* Opgestart
+* Naar vertaaldienst
+* Vertaling in
+* Drukproef aangevraagd
+* Proef in
+* Rappel proef
+* Proef verbeterd
+* Publicatie gevraagd
+* Gepubliceerd
+* Geannuleerd
+* Gepauzeerd
 
-Deze worden voornamelijk gebruikt voor interne workflow doeleinden.
+Deze worden voornamelijk gebruikt voor interne workflow doeleinden. Elk van de statussen is een `skos:Concept` die deel uitmaken van eenzelfde `skos:ConceptScheme` via `skos:inScheme`.
 
-Elk van de statussen is een `skos:Concept` die deel uitmaken van eenzelfde `skos:ConceptScheme` via `skos:inScheme`.
+In principe zou de status van een publicatie afgeleid kunnen worden uit de data, maar aangezien deze eigenschap zeer intensief gebruikt wordt in het werkproces (vb. bij zoeken) is er geopteerd om de status te expliciteren in de data als eigenschap van een publicatieaangelegenheid. 
 
 Om publicaties te kunnen opvolgen wil men de datum van de laatste statuswijziging bijhouden. Dit gebeurt via een `pub:PublicatieStatusWijziging < prov:Activity`. Momenteel wordt enkel de laatste wijzing bijgehouden. De eigenschap `prov:startedAtTime` bevat het tijdstip van de wijziging. De `pub:PublicatieStatusWijziging` is via `prov:hadActivity` gerelateerd aan de publicatieaangelegenheid. Op ieder moment bevat de `pub:PublicatieStatusWijziging` die gerelateerd is aan de publicatieaangelegenheid het tijdstip waarop de huidige status van de publicatieaangelegenheid gezet is.
 
-Wanneer de status gewijzigd wordt naar afgevoerd of gepubliceerd, betekent dit ook dat de een sluitingsdatum (`dossier:sluitingsdatum`) gezet wordt alsook de einddatum (`dossier:Procedurestap.einddatum`) op de bijhorende procedurestappen indien deze nog niet ingevuld zijn.
+Wanneer de status gewijzigd wordt naar geannuleerd of gepubliceerd, betekent dit ook dat de een sluitingsdatum (`dossier:sluitingsdatum`) gezet wordt alsook de einddatum (`dossier:Procedurestap.einddatum`) op de bijhorende procedurestappen indien deze nog niet ingevuld zijn.
 
 # Procedure
 Iedere publication flow omvat volgende, vaste procedurestappen:
@@ -77,7 +79,9 @@ De geselecteerde documenten om te vertalen zijn het eindresultaat (`dossier:gene
 ### Vertaalactiviteit
 Wanneer het vertaalde document ontvangen wordt, wordt het als resultaat (`dossier:genereert`) aan de vertaling-activiteit gekoppeld en toegevoegd als stuk aan het dossier. Er wordt een einddatum op de vertaalactiviteit gezet.
 
-**TODO**: link tussen origineel document en vertaald stuk?, taal toevoegen aan stuk?
+De taal van het document wordt gecapteerd door de eigenschap `dct:language` op `dossier:Stuk`.
+
+_Note: aangezien de documenten aanzien worden als interne werkdocumenten en de workflow van de gebruikers zo licht mogelijk wil gehouden worden, wordt de link tussen het originele en vertaalde document niet gecapteerd. Een vertaalactiviteit bevat dus origele documenten als input en vertaalde documenten als output, maar er is geen 1-op-1 mapping tussen beiden aanwezig in de data._
 
 ## Publicatie-procedurestap
 De publicatie-procedurestap kan volgende activiteiten omvatten:
@@ -121,7 +125,7 @@ Totdat inheritance ondersteund wordt in mu-cl-resources worden voor de relatie t
 In het geval een publication-flow opgestart wordt vanuit een MR worden volgende relaties bijgehouden:
 - link naar het document (`dossier:Stuk`) via `pub:referentieDocument`
 - link naar het dossier van de besluitvormingsaangelegenheid via `dossier:behandelt`
-- link naar de beslissing (`besluitvorming:BeslissingsActiviteit`) via `dct:subject`. Aangezien `besluitvorming:BeslissingsActiviteit` en `besluit:BehandelingVanAgendapunt` momenteel nog 1 entiteit zijn in de huidige implementatie wordt de relatie gelegd naar `besluit:BehandelingVanAgendapunt`.
+- link naar de beslissing (`besluitvorming:Beslissingsactiviteit`) via `dct:subject`.
 
 ## Niet via MR
 In het geval een publication-flow opgestart wordt niet via een MR wordt er een nieuw dossier (`dossier:Dossier`) en bijhorende beslissingsactiviteit gemaakt op het moment dat de publicatieaangelegenheid gemaakt wordt. De gebruiker kan vrij een titel (`dct:title`) en korte titel (`dct:alternative`) ingeven. Deze worden zowel op het dossier als op de publicatieaangelegenheid ingesteld. Tevens kan een datum van de beslissing ingevuld worden die ingesteld wordt als startdatum (`dossier:Activiteit.startdatum`) van de beslissingsactiviteit.
