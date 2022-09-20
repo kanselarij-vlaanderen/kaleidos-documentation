@@ -15,18 +15,12 @@ Aan de kant van de secretarie kan de `sign:Handtekenaangelegenheid` in het gehel
 
 Een handtekenaangelegenheid is gelinkt aan een dossier via `sign:behandeltDossier` (< `dossier:behandelt`). Het dossier is hetzelfde als dat van de besluitvormingsaangelegenheid. Sign flows voor andere dossiers worden niet ondersteund in Kaleidos.
 
-Een handtekenaangelegenheid start steeds vanuit een beslissingsactiviteit, die op zijn beurt het resultaat is van een behandeling van agendapunt. In de huidige implementatie zijn beiden resources nog vervat in 1, nl. `besluit:BehandelingVanAgendapunt`. De link `sign:heeftBeslissing` wordt daarom momenteel vanuit handtekenaangelegenheid gelegd naar `besluit:BehandelingVanAgendapunt`, maar dit zal op termijn aangepast worden naar `besluitvorming:Beslissingsactiviteit`
-
-Bij het opstarten van een nieuwe handtekenaangelegenheid wordt de openingsdatum (`dossier:openingsdatum`) op de huidige datum/tijd ingesteld. De titel (`dct:title`) en korte titel (`dct:alternative`) worden overgenomen van de besluitsvormingsaangelegenheid indien die er is. Eens opgestart kan de titel van de handtekenaangelegenheid gewijzigd worden zonder dat de titel van de bijhorende besluitvormingsaangelegenheid wijzigt.
+Een handtekenaangelegenheid start steeds vanuit een beslissingsactiviteit (`besluitvorming:Beslissingsactiviteit`), gelinkt via `sign:heeftBeslissing` (< `dct:subject`). Bij het opstarten van een nieuwe handtekenaangelegenheid wordt de openingsdatum (`dossier:openingsdatum`) op de huidige datum/tijd ingesteld. De titel (`dct:title`) en korte titel (`dct:alternative`) worden overgenomen van de besluitsvormingsaangelegenheid indien die er is. Eens opgestart kan de titel van de handtekenaangelegenheid gewijzigd worden zonder dat de titel van de bijhorende besluitvormingsaangelegenheid wijzigt.
 
 Sommige eigenschappen van de handtekenaangelegenheid hebben betrekking op het doeldocument van de uiteindelijke publicatie (vb. type regelgevend document). Momenteel zijn deze rechtstreeks op handtekenaangelegenheid gedefinieerd, maar mogelijk willen we hier in de toekomst toch een aparte resource voor definiëren zodat de informatie gedeeld kan worden tussen de besluitvorming-, handteken- en publicatieaangelegenheid.
 
-Opmerkingen:
-* Het splitsen van dossier en besluitvormingsaangelegenheid in de huidige implementatie valt buiten de scope van de signing-flow.
-* Het splitsen van beslissingsactiviteit en behandeling van agendapunt in de huidige implementatie valt buiten de scope van de signing-flow.
-
 # Procedure
-Iedere handtekenaangelegenheid bevat 1 vast procedurestap: `sign:HandtekenProcedurestap` (< `dossier:Procedurestap`). Bij het aanmaken van een handtekenaangelegenheid wordt de procedurestap automatisch aangemaakt met als startdatum (`dossier:Procedurestap.startdatum`) dezelfde datum als de openingsdatum van de handtekenaangelegenheid.
+Iedere handtekenaangelegenheid bevat 1 vaste procedurestap: `sign:HandtekenProcedurestap` (< `dossier:Procedurestap`). Bij het aanmaken van een handtekenaangelegenheid wordt de procedurestap automatisch aangemaakt met als startdatum (`dossier:Procedurestap.startdatum`) dezelfde datum als de openingsdatum van de handtekenaangelegenheid.
 
 Tijdens een procedurestap kunnen volgende activiteiten plaatsvinden:
 - `sign:Markeringsactiviteit`
