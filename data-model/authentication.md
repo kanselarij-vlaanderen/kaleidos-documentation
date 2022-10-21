@@ -32,3 +32,10 @@ De informatie uit ACM/IDM claims wordt in Kaleidos overgenomen volgens onderstaa
 | `vo_orgnaam`          | `foaf:Organization`  | `skos:prefLabel`   |
 | `dkb_kaleidos_rol_3d` | `org:Role`           | `skos:notation`    |
 
+## Blokkeren van gebruikers, werkrelaties en organisaties
+
+In principe wordt de toegang tot Kaleidos volledig beheerd in het gebruikersbeheer van ACM/IDM. Om toch snel te kunnen handelen in noodsituaties voorziet Kaleidos echter de optie om dit gebruikersbeheer te overrulen en toegang tot de applicatie te blokkeren voor een (subset van) gebruiker(s). Het blokkeren kan op verschillende niveaus toegepast worden:
+
+1. op niveau van **werkrelatie**: een gebruiker heeft geen toegang meer voor een bepaalde organisatie
+2. op niveau van **gebruiker**: een gebruiker heeft geen toegang meer voor geen enkele van zijn werkrelaties, inclusief nieuwe werkrelaties waarmee hij in de toekomst aanmeldt
+3. op niveau van **organisatie**: alle gebruikers met een werkrelatie voor een bepaalde organisatie hebben geen toegang meer, incl. nieuwe gebruikers die zich in de toekomst aanmelden voor deze organisatie. De blokkering op organisatieniveau vertaalt zich naar een blokkering op het niveau van de werkrelaties. Deze blokkering kan nadien per werkrelatie aangepast worden om zo toch uitzonderingen toe te staan binnen een geblokkeerde organisatie.
