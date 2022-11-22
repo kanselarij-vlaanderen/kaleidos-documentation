@@ -14,6 +14,8 @@ Je kan de calls in deze voorbeelden uittesten en bewerken door ze uit te voeren 
 
 Het is handig om bekend te zijn met de `term-level queries` in https://github.com/mu-semtech/mu-search#term-level-queries om deze calls goed te begrijpen.
 
+Ter info: de lijst van beschikbare resource endpoints can [hier](https://github.com/kanselarij-vlaanderen/app-valvas/blob/master/config/dispatcher/dispatcher.ex#L24-L68) gevonden worden.
+
 ### calls om mandatarissen op te lijsten
 
 Om alle personen in de databank op te lijsten, volstaat het om de `people` URL te bevragen, eventueel met een paginatie parameter. Bijvoorbeeld: `https://beslissingenvlaamseregering.vlaanderen.be/people?page[size]=1000`.
@@ -24,6 +26,10 @@ Om mandatarissen uit een specifieke regeringssamenstelling op te lijsten, kan je
 De mandatarissen zitten dan in de response onder `data.included`. Merk op dat eenzelfde persoon verscheidene mandaten kan hebben, over verschillende periodes in dezelfde regering. Daarom ontdubbelen we de resultaten met `collapse_uuids=t`.
 
 Om de **huidige** regeringssamenstelling makkelijk op te vragen zonder de `id` te weten, kunnen we gebruik maken van het feit dat de regering die nu actief is geen `end-date` heeft in de databank. M.a.w., we kunnen deze opvragen met de volgende call: `https://beslissingenvlaamseregering.vlaanderen.be/government-bodies?filter[:has:start-date]=true&filter[:has-no:end-date]=true&filter[:has:mandatees]=true&include=mandatees.person`.
+
+Merk op dat dit ook weer verschillende mandatarissen zal opleveren per persoon, aangezien we iedere wissel van persoon, positie en/of functie in de regering behandelen als een compleet nieuwe regeringssamenstelling in de databank. Om enkel de momenteel actieve mandatarissen op te lijsten, kan de volgende call gebruikt worden: https://beslissingenvlaamseregering.vlaanderen.be/mandatees?filter[government-body][id]=5fed907ee6670526694a0706&filter[:has-no:end-date]=true&include=person&collapse_uuids=t&sort=position
+of
+https://beslissingenvlaamseregering.vlaanderen.be/mandatees?filter[government-body][:has:start-date]=true&filter[government-body][:has-no:end-date]=true&filter[:has-no:end-date]=true&include=person&collapse_uuids=t&sort=position
 
 ### nieuwsberichten search calls met verschillende filters
 
