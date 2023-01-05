@@ -207,7 +207,7 @@ Once this is done, you should see two `semtech/mu-javascript-template` images in
 Then you change your `docker-compose.override.yml` to the following:
 
 ```
-skeleton-service:
+my-service:
   image: semtech/mu-javascript-template:windows #only for windows users
   ports:
     - 8882:80
