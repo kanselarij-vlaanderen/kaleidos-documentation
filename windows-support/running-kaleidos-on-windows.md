@@ -124,19 +124,40 @@ COMPOSE_FILE=docker-compose.yml;docker-compose.development.yml;docker-compose.ov
 and that the `docker-compose.override.yml` file exists and disables the services you won't need to run locally:
 
 ```
-search:
-  entrypoint: "echo 'service disabled'"
-tika:
-  entrypoint: "echo 'service disabled'"
-elasticsearch:
-  entrypoint: "echo 'service disabled'"
-yggdrasil:
-  entrypoint: "echo 'service disabled'"
+services:
+  search:
+    entrypoint: "echo 'service disabled'"
+  tika:
+    entrypoint: "echo 'service disabled'"
+  elasticsearch:
+    entrypoint: "echo 'service disabled'"
+  yggdrasil:
+    entrypoint: "echo 'service disabled'"
 ```
 
 To have some data available when you run the stack locally, unzip the 3 directories in the `testdata` folder in `testdata.zip` to the `data` folder in your project.
 
 When Docker Compose has finished pulling all images (this could take a while), the application should now be accessible in your browser at http://localhost/mock-login
+
+# Developing on frontend-kaleidos
+
+To develop on the frontend (at least on Windows), the easiest thing to do is to run it outside of the Docker containerization.
+
+Disable the frontend in the stack by including the following in `docker-compose.override.yml`:
+
+```
+  frontend:
+    entrypoint: "echo 'service disabled'"
+```
+
+Then clone the [frontend-kaleidos](https://github.com/kanselarij-vlaanderen/frontend-kaleidos) repository (using the same line-ending precautions as before), and install and run it on its own using the following commands:
+
+```
+npm install
+npm start
+```
+
+Once this has completed (it could take a while, especially with the stack running as well), the application should be available at http://localhost:4200/mock-login with all Ember perks such as live code reload.
 
 # Adding microservices with code reload
 
