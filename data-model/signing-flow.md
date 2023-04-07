@@ -44,14 +44,14 @@ Voor iedere nieuwe handtekenaangelegenheid wordt een handteken-procedurestap gem
 _Note: het markeren van documenten bevat nog geen interactie met SigningHub. De signing-flow is op dit moment enkel gekend aan de kant van Kaleidos._
 
 ## Voorbereiden van documenten in SigningHub
-Nadat de raadgever documenten gemarkeerd heeft, moet iedere handtekenaangelegenheid voorbereid worden in SigningHub. Deze activiteit wordt uitgevoerd door een secretariaatsmedewerker van het kabinet en omvat:
-- het opladen van de documenten in SigningHub
+Nadat de documenten gemarkeerd zijn, moet iedere handtekenaangelegenheid voorbereid worden in SigningHub. Deze activiteit wordt uitgevoerd door een secretariaatsmedewerker van het kabinet en omvat:
+- het opladen van de documenten naar SigningHub
 - het koppelen van documenten aan een werkstroom in SigningHub
 - het plaatsen van handtekenvakken in de document(en) in SigningHub
 
 Al deze acties zitten vervat in `sign:Voorbereidingsactiviteit`. Deze activiteit is gelinkt aan de markeringsactiviteit via `prov:wasInformedBy`: de output van de markeringsactiviteit, nl. het gemarkeerde document, is de input van de voorbereidingsactiviteit.
 
-Het document dat opgeladen wordt in SigningHub wordt in Kaleidos gecapteerd als `sh:Document`. Het is gelinkt aan de voorbereidingsactiviteit via `sign:voorbereidingGenereert` (< `dossier:genereert`) en aan het orginele stuk in Kaleidos via `prov:hadPrimarySource`. Ieder SigningHub document heeft een  en package ID. De package ID identificeert de werkstroom in SigningHub.
+Het document dat opgeladen wordt in SigningHub wordt in Kaleidos gecapteerd als `sh:Document`. Het is gelinkt aan de voorbereidingsactiviteit via `sign:voorbereidingGenereert` (< `dossier:genereert`) en aan het orginele stuk in Kaleidos via `prov:hadPrimarySource`. Ieder SigningHub document heeft een document ID en package ID. De package ID identificeert de werkstroom in SigningHub.
 
 De mandatarissen waarvoor handtekenvakken geplaatst moeten worden, zijn de ministers die bevoegd zijn voor het agendapunt en bijkomend de minister-president. Deze laatste moet alle documenten van de ministerraad die getekend moeten worden, ondertekenen.
 
