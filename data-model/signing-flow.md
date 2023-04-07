@@ -25,6 +25,7 @@ Iedere handtekenaangelegenheid bevat 1 vaste procedurestap: `sign:HandtekenProce
 Tijdens een procedurestap kunnen volgende activiteiten plaatsvinden:
 - `sign:Markeringsactiviteit`
 - `sign:Voorbereidingsactiviteit`
+- `sign:Goedkeuringsactiviteit`
 - `sign:Handtekenactiviteit`
 - `sign:Weigeractiviteit`
 - `sign:AnnulatieActiviteit`
@@ -55,14 +56,16 @@ Het document dat opgeladen wordt in SigningHub wordt in Kaleidos gecapteerd als 
 
 De mandatarissen waarvoor handtekenvakken geplaatst moeten worden, zijn de ministers die bevoegd zijn voor het agendapunt en bijkomend de minister-president. Deze laatste moet alle documenten van de ministerraad die getekend moeten worden, ondertekenen.
 
+Een handtekenprocedurestap omvat 1 goedkeuringsactiviteit per goedkeurder. Goedkeurders zijn de raadgevers van hun respectievelijke minister. Zij krijgen de rol van "Beoordeelaar" in de SigningHub-werkstroom. Zij beoordelen of het document geschikt is om door de minister getekend te worden.
+
 Ieder handtekenvak dat geplaatst wordt in het document wordt in het data model gecapteerd a.d.h.v. een `sign:Handtekenactiveit`. De minister die moet tekenen wordt gelinkt via `sign:ondertekenaar` (< `prov:qualifiedAssociaton`). Indien 2 ministers een document moeten ondertekenen zijn er dus 2 handtekenactiviteiten, nl. een per minister.
 
 Iedere handtekenactiviteit is via `prov:wasInformedBy` gelinkt aan de voorbereidingsactiviteit: de output van de voorbereiding, nl. het document in SigningHub, is de input van de handtekenactiviteit.
 
-## Handtekenen van documenten in SigningHub
+## Goedkeuren en Handtekenen van documenten in SigningHub
 Na de voorbereiding van de documenten in SigningHub volgt het eigenlijke tekenen van de documenten. Hiervoor dient de werkstroom in SigningHub opgestart te worden.
 
-Initieel hebben de handtekenactiviteiten in Kaleidos geen start- en einddatum. Eens de werkstroom in SigningHub opgestart wordt, wordt de startdatum van alle handtekenactiviteiten ingevuld. De einddatum wordt pas gezet op het moment dat de minister zijn handtekening plaatst.
+Initieel hebben de handtekenactiviteiten in Kaleidos geen start- en einddatum. De einddatum wordt pas gezet op het moment dat de minister zijn handtekening plaatst.
 
 Een minister kan ook weigeren om te tekenen in SigningHub. Dit wordt in Kaleidos gecapteerd als `sign:HandtekeningWeigeractiviteit`. Deze is via `sign:isGeweigerdDoor` (< `prov:wasInformedBy`) gelinkt aan de handtekenactiviteit.
 
