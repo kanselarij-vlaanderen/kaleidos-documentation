@@ -19,7 +19,7 @@ If you do wish to continue down the rabbit hole, keep reading at your own risk..
 
 # Requirements
 
-You'll need a machine with plenty of RAM (at least 16GB is recommended), and a distriibution of **Windows Professional** with Hyper-V support and an installation of [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+You'll need a machine with plenty of RAM (at least 16GB is recommended), and a distribution of **Windows Professional** with Hyper-V support and an installation of [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
 Do not attempt to run this on Windows Home. While it is technically possible to achieve using Virtualbox, it is such a hassle, and that much slower that the switch to Linux (e.g., via dual boot) is by far the better option.
 
